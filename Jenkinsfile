@@ -89,7 +89,7 @@ pipeline {
                             --host %GATEWAY_HOST% ^
                             --port %GATEWAY_PORT% ^
                             --username "%GATEWAY_USERNAME%" ^
-                            --password "%GATEWAY_PASSWORD%" ^
+                            --plaintextPassword "%GATEWAY_PASSWORD%" ^
                             --bundle "%BUNDLE_FILE%"
  
                         if %ERRORLEVEL% neq 0 (
