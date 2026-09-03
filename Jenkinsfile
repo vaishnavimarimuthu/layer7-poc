@@ -91,7 +91,9 @@ pipeline {
                             --username "%GATEWAY_USERNAME%" ^
                             --plaintextPassword "%GATEWAY_PASSWORD%" ^
                             --bundle "%BUNDLE_FILE%" ^
-                            --results "gmu-migration-results.xml"
+                            --results "gmu-migration-results.xml" ^
+                            --trustCertificate ^
+                            --trustHostname
  
                         if %ERRORLEVEL% neq 0 (
                             echo Deployment failed with error code %ERRORLEVEL%.
