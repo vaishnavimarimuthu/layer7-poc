@@ -11,7 +11,8 @@ pipeline {
  
     environment {
         BUNDLE_FILE = 'bundles/Configuration-Cache-Demo.bundle'
-        GMU_HOME = '/opt/gmu'
+        //GMU_HOME = '/opt/gmu'
+        GMU_HOME = 'C:\\gmu'
     }
  
     stages {
@@ -55,7 +56,7 @@ pipeline {
                 sh '''
                     echo "Checking GMU installation..."
  
-                    if [ ! -f "${GMU_HOME}/GatewayMigrationUtility.sh" ]; then
+                    if [ ! -f "${GMU_HOME}/GatewayMigrationUtility.bat" ]; then
                         echo "GMU not found at ${GMU_HOME}"
                         exit 1
                     fi
@@ -78,7 +79,7 @@ pipeline {
                     sh '''
                         echo "Deploying bundle to Layer7 Gateway..."
  
-                        ${GMU_HOME}/GatewayMigrationUtility.sh \
+                        ${GMU_HOME}/GatewayMigrationUtility.bat \
                             migrateIn \
                             --host ${GATEWAY_HOST} \
                             --port ${GATEWAY_PORT} \
