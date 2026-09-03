@@ -90,7 +90,8 @@ pipeline {
                             --port %GATEWAY_PORT% ^
                             --username "%GATEWAY_USERNAME%" ^
                             --plaintextPassword "%GATEWAY_PASSWORD%" ^
-                            --bundle "%BUNDLE_FILE%"
+                            --bundle "%BUNDLE_FILE%" ^
+                            --results "gmu-migration-results.xml"
  
                         if %ERRORLEVEL% neq 0 (
                             echo Deployment failed with error code %ERRORLEVEL%.
