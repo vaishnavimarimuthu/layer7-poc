@@ -110,7 +110,7 @@ pipeline {
     }
 }
  
-       /*stage('Deploy to Layer7') {
+       stage('Deploy to Layer7') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -144,7 +144,7 @@ pipeline {
                     '''
                 }
             }
-        }*/
+        }
  
         stage('Deployment Verification') {
             steps {
