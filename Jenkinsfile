@@ -86,14 +86,16 @@ pipeline {
  
                 set "PATH=%JAVA_HOME%\\bin;%PATH%"
  
-                "%GMU_HOME%\\GatewayMigrationUtility.bat" list ^
+                "%GMU_HOME%\\GatewayMigrationUtility.bat" migrateIn ^
                     -h "%GATEWAY_HOST%" ^
                     -p "%GATEWAY_PORT%" ^
                     -u "%GATEWAY_USERNAME%" ^
                     --plaintextPassword "%GATEWAY_PASSWORD%" ^
+                    --bundle "%BUNDLE_FILE%" ^
+                    --results "results.xml" ^
                     --trustCertificate ^
                     --trustHostname ^
-                    -t POLICY
+                    --test
  
                 if errorlevel 1 (
                     echo ERROR: Unable to connect to Layer7 Gateway
@@ -108,7 +110,7 @@ pipeline {
     }
 }
  
-        stage('Deploy to Layer7') {
+       /*stage('Deploy to Layer7') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -142,7 +144,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
  
         stage('Deployment Verification') {
             steps {
