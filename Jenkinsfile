@@ -11,7 +11,6 @@ pipeline {
  
     environment {
         BUNDLE_FILE = 'bundles/Configuration-Cache-Demo.bundle'
-        //GMU_HOME = '/opt/gmu'
         GMU_HOME = 'C:\\gmu'
     }
  
@@ -53,15 +52,17 @@ pipeline {
  
         stage('Validate GMU') {
             steps {
-                sh '''
-                    echo "Checking GMU installation..."
+                // Changed from sh to bat and updated syntax for Windows CLI
+                bat '''
+                    @echo off
+                    echo Checking GMU installation...
  
-                    if [ ! -f "${GMU_HOME}/GatewayMigrationUtility.bat" ]; then
-                        echo "GMU not found at ${GMU_HOME}"
-                        exit 1
-                    fi
+                    if not exist "%GMU_HOME%\\GatewayMigrationUtility.bat" (
+                        echo GMU not found at %GMU_HOME%
+                        exit /b 1
+                    )
  
-                    echo "GMU installation found."
+                    echo GMU installation found.
                 '''
             }
         }
@@ -76,18 +77,25 @@ pipeline {
                     )
                 ]) {
  
-                    sh '''
-                        echo "Deploying bundle to Layer7 Gateway..."
+                    // Changed from sh to bat and converted line continuation to Windows caret (^)
+                    bat '''
+                        @echo off
+                        echo Deploying bundle to Layer7 Gateway...
  
-                        ${GMU_HOME}/GatewayMigrationUtility.bat \
-                            migrateIn \
-                            --host ${GATEWAY_HOST} \
-                            --port ${GATEWAY_PORT} \
-                            --username "${GATEWAY_USERNAME}" \
-                            --password "${GATEWAY_PASSWORD}" \
-                            --bundle "${BUNDLE_FILE}"
+                        call "%GMU_HOME%\\GatewayMigrationUtility.bat" ^
+                            migrateIn ^
+                            --host %GATEWAY_HOST% ^
+                            --port %GATEWAY_PORT% ^
+                            --username "%GATEWAY_USERNAME%" ^
+                            --password "%GATEWAY_PASSWORD%" ^
+                            --bundle "%BUNDLE_FILE%"
  
-                        echo "Deployment completed."
+                        if %ERRORLEVEL% neq 0 (
+                            echo Deployment failed with error code %ERRORLEVEL%.
+                            exit /b %ERRORLEVEL%
+                        )
+ 
+                        echo Deployment completed.
                     '''
                 }
             }
