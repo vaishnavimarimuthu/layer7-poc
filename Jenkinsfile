@@ -175,6 +175,7 @@ pipeline {
         }
  
         always {
+            archiveArtifacts artifacts: 'results.xml, gmu-migration-results.xml', allowEmptyArchive: true
             cleanWs()
         }
     }
