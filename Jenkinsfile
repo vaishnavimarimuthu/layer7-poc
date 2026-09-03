@@ -12,6 +12,10 @@ pipeline {
     environment {
         BUNDLE_FILE = 'bundles/Configuration-Cache-Demo.bundle'
         GMU_HOME = 'C:\\gmu'
+        
+        
+        JAVA_HOME = 'C:\\Java\\jdk-17.0.12'
+        PATH = "${env.JAVA_HOME}\\bin;${env.PATH}"
     }
  
     stages {
@@ -52,7 +56,6 @@ pipeline {
  
         stage('Validate GMU') {
             steps {
-                // Changed from sh to bat and updated syntax for Windows CLI
                 bat '''
                     @echo off
                     echo Checking GMU installation...
@@ -77,7 +80,6 @@ pipeline {
                     )
                 ]) {
  
-                    // Changed from sh to bat and converted line continuation to Windows caret (^)
                     bat '''
                         @echo off
                         echo Deploying bundle to Layer7 Gateway...
