@@ -216,7 +216,7 @@ pipeline {
             """
         }
         always {
-        archiveArtifacts artifacts: 'results-.xml, gmu-results-.xml', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'results-*.xml, gmu-results-*.xml', allowEmptyArchive: true
         cleanWs()
     }
     }
