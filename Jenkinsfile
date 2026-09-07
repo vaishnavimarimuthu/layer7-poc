@@ -124,7 +124,7 @@ pipeline {
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
                     ),
-                string(credentialsId: 'layer7-bundle-passphrase', variable: 'BUNDLE_PASSPHRASE')
+                string(credentialsId: 'layer7-gateway-credentials', variable: 'BUNDLE_PASSPHRASE')
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
@@ -162,7 +162,7 @@ pipeline {
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
                     ),
-                string(credentialsId: 'layer7-bundle-passphrase', variable: 'BUNDLE_PASSPHRASE')
+                string(credentialsId: 'layer7-gateway-credentials', variable: 'BUNDLE_PASSPHRASE')
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
