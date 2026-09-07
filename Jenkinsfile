@@ -123,8 +123,7 @@ pipeline {
                         credentialsId: 'layer7-gateway-credentials',
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
-                    ),
-                string(credentialsId: 'layer7-gateway-credentials', variable: 'BUNDLE_PASSPHRASE')
+                    )
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
@@ -142,7 +141,7 @@ pipeline {
                                         -u "%GATEWAY_USERNAME%" ^
                                         --plaintextPassword "%GATEWAY_PASSWORD%" ^
                                         --bundle "${currentBundlePath}" ^
-                                        --plaintextEncryptionPassphrase "%BUNDLE_PASSPHRASE%" ^
+                                        --plaintextEncryptionPassphrase "%GATEWAY_PASSWORD%" ^
                                         --results "results-${app}.xml" ^
                                         --trustCertificate ^
                                         --trustHostname ^
@@ -161,8 +160,7 @@ pipeline {
                         credentialsId: 'layer7-gateway-credentials',
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
-                    ),
-                string(credentialsId: 'layer7-gateway-credentials', variable: 'BUNDLE_PASSPHRASE')
+                    )
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
@@ -181,7 +179,7 @@ pipeline {
                                             --username "%GATEWAY_USERNAME%" ^
                                             --plaintextPassword "%GATEWAY_PASSWORD%" ^
                                             --bundle "${currentBundlePath}" ^
-                                            --plaintextEncryptionPassphrase "%BUNDLE_PASSPHRASE%" ^
+                                            --plaintextEncryptionPassphrase "%GATEWAY_PASSWORD%" ^
                                             --results "gmu-results-${app}.xml" ^
                                             --trustCertificate ^
                                             --trustHostname
