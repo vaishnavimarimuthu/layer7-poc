@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<l7:Bundle xmlns:l7="http://ns.l7tech.com/2010/04/gateway-management">
+    <l7:References>
+        <l7:Item>
+            <l7:Name>Internal Identity Provider</l7:Name>
+            <l7:Id>0000000000000000fffffffffffffffe</l7:Id>
+            <l7:Type>ID_PROVIDER_CONFIG</l7:Type>
+            <l7:TimeStamp>2026-09-07T14:59:25.627Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:IdentityProvider id="0000000000000000fffffffffffffffe" version="0">
+                    <l7:Name>Internal Identity Provider</l7:Name>
+                    <l7:IdentityProviderType>Internal</l7:IdentityProviderType>
+                </l7:IdentityProvider>
+            </l7:Resource>
+        </l7:Item>
+        <l7:Item>
+            <l7:Name>vignesh-tst</l7:Name>
+            <l7:Id>f1fcdb59776c681ccf26924d0c5a0125</l7:Id>
+            <l7:Type>USER</l7:Type>
+            <l7:TimeStamp>2026-09-07T14:59:25.854Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:User id="f1fcdb59776c681ccf26924d0c5a0125" providerId="0000000000000000fffffffffffffffe">
+                    <l7:Login>vignesh-tst</l7:Login>
+                    <l7:Password bundleKey="$L7C2$9fa1f,iQX95/YJX9/kAbrI9bb28POZ42/Gy7D6mswGRYUSEJo=$XHiXnZ9odlyA+m+Xf3mzUazjuyouMYvt52YdZzbZmeyZVLveS/3bQQfPEUlnFAK8UcyBk1j8UpGy1FqCA0ALeVrI83SpvPEhkkOPVfEszUJCqhYt2xXbdbcAW0SEz/4U" format="bundleKey:sha512crypt">$L7C2$1,zcYPicWUcQbyqTn9Fy5Z+454o7JVOPA25SMEiuSXDP8=$gOi+8Msu+Y4U2riWFCzQsGfHnELAeUZHUfmfvvl7Jh4kcANsjdvcKzHZ3OKfP3N+f/m6mviPOTrwJ6U9ka7PWqHbiM49+fB+XKlCuYDSt2ygRm0dd4S7NpcT5D81WoaEANEdmirLL4S3ibg1FbzZVHE2RY501SHFMZZAkzMecnY448D4P33kf9VnA/pmNc7l0Ffv1KvssPL91V8V6YHd1g==</l7:Password>
+                    <l7:Properties>
+                        <l7:Property key="accountExpiration">
+                            <l7:LongValue>-1</l7:LongValue>
+                        </l7:Property>
+                        <l7:Property key="enabled">
+                            <l7:BooleanValue>true</l7:BooleanValue>
+                        </l7:Property>
+                        <l7:Property key="name">
+                            <l7:StringValue>vignesh-tst</l7:StringValue>
+                        </l7:Property>
+                    </l7:Properties>
+                </l7:User>
+            </l7:Resource>
+        </l7:Item>
+        <l7:Item>
+            <l7:Name>vignesh-test</l7:Name>
+            <l7:Id>f1fcdb59776c681ccf26924d0c58c8c6</l7:Id>
+            <l7:Type>SERVICE</l7:Type>
+            <l7:TimeStamp>2026-09-07T14:59:25.856Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:Service id="f1fcdb59776c681ccf26924d0c58c8c6" version="4">
+                    <l7:ServiceDetail folderId="0000000000000000ffffffffffffec76" id="f1fcdb59776c681ccf26924d0c58c8c6" version="4">
+                        <l7:Name>vignesh-test</l7:Name>
+                        <l7:Enabled>true</l7:Enabled>
+                        <l7:ServiceMappings>
+                            <l7:HttpMapping>
+                                <l7:UrlPattern>/vignesh-test</l7:UrlPattern>
+                                <l7:Verbs>
+                                    <l7:Verb>GET</l7:Verb>
+                                    <l7:Verb>POST</l7:Verb>
+                                    <l7:Verb>PUT</l7:Verb>
+                                    <l7:Verb>DELETE</l7:Verb>
+                                </l7:Verbs>
+                            </l7:HttpMapping>
+                        </l7:ServiceMappings>
+                        <l7:Properties>
+                            <l7:Property key="hasRouting">
+                                <l7:BooleanValue>true</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="internal">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="policyRevision">
+                                <l7:LongValue>7</l7:LongValue>
+                            </l7:Property>
+                            <l7:Property key="soap">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="tracingEnabled">
+                                <l7:BooleanValue>true</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="wssProcessingEnabled">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                        </l7:Properties>
+                    </l7:ServiceDetail>
+                    <l7:Resources>
+                        <l7:ResourceSet tag="policy">
+                            <l7:Resource type="policy" version="6">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;wsp:Policy xmlns:L7p="http://www.layer7tech.com/ws/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2002/12/policy"&gt;
+    &lt;wsp:All wsp:Usage="Required"&gt;
+        &lt;L7p:AuditAssertion&gt;
+            &lt;L7p:SaveRequest booleanValue="true"/&gt;
+            &lt;L7p:SaveResponse booleanValue="true"/&gt;
+        &lt;/L7p:AuditAssertion&gt;
+        &lt;L7p:AuditDetailAssertion&gt;
+            &lt;L7p:Detail stringValue="request.http.allheadervalues:${request.http.allheadervalues}"/&gt;
+        &lt;/L7p:AuditDetailAssertion&gt;
+        &lt;L7p:SslAssertion/&gt;
+        &lt;L7p:HttpBasic/&gt;
+        &lt;L7p:SpecificUser&gt;
+            &lt;L7p:IdentityProviderOid goidValue="0000000000000000fffffffffffffffe"/&gt;
+            &lt;L7p:UserLogin stringValue="vignesh-tst"/&gt;
+            &lt;L7p:UserName stringValue="vignesh-tst"/&gt;
+            &lt;L7p:UserUid stringValue="f1fcdb59776c681ccf26924d0c5a0125"/&gt;
+        &lt;/L7p:SpecificUser&gt;
+        &lt;L7p:HardcodedResponse&gt;
+            &lt;L7p:Base64ResponseBody stringValue="UmVxdWVzdCByZWFjaGVkIHN1Y2Nlc3NmdWxseQ=="/&gt;
+            &lt;L7p:ResponseContentType stringValue="text/plain; charset=UTF-8"/&gt;
+        &lt;/L7p:HardcodedResponse&gt;
+    &lt;/wsp:All&gt;
+&lt;/wsp:Policy&gt;
+</l7:Resource>
+                        </l7:ResourceSet>
+                    </l7:Resources>
+                </l7:Service>
+            </l7:Resource>
+        </l7:Item>
+    </l7:References>
+    <l7:Mappings>
+        <l7:Mapping action="NewOrExisting" srcId="0000000000000000fffffffffffffffe" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/identityProviders/0000000000000000fffffffffffffffe" type="ID_PROVIDER_CONFIG">
+            <l7:Properties>
+                <l7:Property key="FailOnNew">
+                    <l7:BooleanValue>true</l7:BooleanValue>
+                </l7:Property>
+            </l7:Properties>
+        </l7:Mapping>
+        <l7:Mapping action="NewOrExisting" srcId="f1fcdb59776c681ccf26924d0c5a0125" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/f1fcdb59776c681ccf26924d0c5a0125" type="USER"/>
+        <l7:Mapping action="NewOrExisting" srcId="0000000000000000ffffffffffffec76" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/folders/0000000000000000ffffffffffffec76" type="FOLDER">
+            <l7:Properties>
+                <l7:Property key="FailOnNew">
+                    <l7:BooleanValue>true</l7:BooleanValue>
+                </l7:Property>
+            </l7:Properties>
+        </l7:Mapping>
+        <l7:Mapping action="NewOrExisting" srcId="f1fcdb59776c681ccf26924d0c58c8c6" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/services/f1fcdb59776c681ccf26924d0c58c8c6" type="SERVICE"/>
+    </l7:Mappings>
+</l7:Bundle>
