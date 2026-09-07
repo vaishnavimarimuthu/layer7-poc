@@ -123,7 +123,8 @@ pipeline {
                         credentialsId: 'layer7-gateway-credentials',
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
-                    )
+                    ),
+                string(credentialsId: 'layer7-bundle-passphrase', variable: 'BUNDLE_PASSPHRASE')
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
@@ -141,6 +142,7 @@ pipeline {
                                         -u "%GATEWAY_USERNAME%" ^
                                         --plaintextPassword "%GATEWAY_PASSWORD%" ^
                                         --bundle "${currentBundlePath}" ^
+                                        --plaintextEncryptionPassphrase "%BUNDLE_PASSPHRASE%" ^
                                         --results "results-${app}.xml" ^
                                         --trustCertificate ^
                                         --trustHostname ^
@@ -159,7 +161,8 @@ pipeline {
                         credentialsId: 'layer7-gateway-credentials',
                         usernameVariable: 'GATEWAY_USERNAME',
                         passwordVariable: 'GATEWAY_PASSWORD'
-                    )
+                    ),
+                string(credentialsId: 'layer7-bundle-passphrase', variable: 'BUNDLE_PASSPHRASE')
                 ]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
@@ -178,6 +181,7 @@ pipeline {
                                             --username "%GATEWAY_USERNAME%" ^
                                             --plaintextPassword "%GATEWAY_PASSWORD%" ^
                                             --bundle "${currentBundlePath}" ^
+                                            --plaintextEncryptionPassphrase "%BUNDLE_PASSPHRASE%" ^
                                             --results "gmu-results-${app}.xml" ^
                                             --trustCertificate ^
                                             --trustHostname
