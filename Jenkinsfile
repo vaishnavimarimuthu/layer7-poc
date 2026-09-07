@@ -42,9 +42,16 @@ pipeline {
  
                     // ── Determine releases ────────────────────────────────────────
                     def releaseInput = params.RELEASE?.trim()?.toUpperCase() ?: 'R1'
-                    def releasesToRun = releaseInput == 'ALL'
-                        ? ['R1', 'R2', 'R3', 'R4'].findAll { fileExists("releases/${it}/manifest.yaml") }
-                        : [releaseInput]
+                    def releasesToRun = []
+
+                    if (releaseInput == 'ALL') {
+                        releasesToRun = ['R1', 'R2', 'R3', 'R4'].findAll { fileExists("releases/${it}/manifest.yaml") }
+                    } else {
+                        // Splits by commas or spaces, trims whitespace, and ensures manifest exists
+                        releasesToRun = releaseInput.split('[,\\s]+')
+                                            .collect { it.trim() }
+                                            .findAll { it && fileExists("releases/${it}/manifest.yaml") }
+                    }
  
                     // ── Optional app-level filter ──────────────────────────────
                     def appFilter = params.APP_FILTER?.trim()
