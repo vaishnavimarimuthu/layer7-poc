@@ -3,4 +3,4 @@
 release: R2
 description: "Release 2 — Second wave set of API Policies"
 services:
-  - sampleTest2.bundle
+  - exportedBundle.xml
