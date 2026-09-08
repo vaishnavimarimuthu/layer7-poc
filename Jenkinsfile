@@ -76,7 +76,7 @@ pipeline {
                             apps = apps.findAll { filterLower.contains(it.toLowerCase()) }
                             echo "Release ${release}: filtered to [${apps.join(', ')}]"
                         }
-                       (apps.isEmpty()) {
+                       if (apps.isEmpty()) {
                             error "No valid bundles found to process for Release ${release} with current APP_FILTER."
                         }
  
