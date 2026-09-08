@@ -76,9 +76,9 @@ pipeline {
                             apps = apps.findAll { filterLower.contains(it.toLowerCase()) }
                             echo "Release ${release}: filtered to [${apps.join(', ')}]"
                         }
-                        if (apps.isEmpty()) {
+                       /*if (apps.isEmpty()) {
                             error "No valid bundles found to process for Release ${release} with current APP_FILTER."
-                        }
+                        }*/
  
                         logReleaseApiMap[release] = apps
                         echo "Final apps to process for Release ${release}: [${apps.join(', ')}]"
