@@ -3,4 +3,5 @@
 release: R2
 description: "Release 2 — Second wave set of API Policies"
 services:
-  - exportedBundle.xml
+  - Basic-Auth-Test
+  - HRT-API
