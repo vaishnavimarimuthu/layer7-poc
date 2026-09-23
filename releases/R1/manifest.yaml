@@ -3,5 +3,5 @@
 release: R1
 description: "Release 1 — First wave set of APIs"
 services:
-  - Configuration-Cache-Demo.bundle
-  - sampleTest.bundle
+  - Sample-Test
+  - Configuration-Cache-Demo
