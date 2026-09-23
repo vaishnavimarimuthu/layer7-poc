@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<l7:Bundle xmlns:l7="http://ns.l7tech.com/2010/04/gateway-management">
+    <l7:References>
+        <l7:Item>
+            <l7:Name>Internal Identity Provider</l7:Name>
+            <l7:Id>0000000000000000fffffffffffffffe</l7:Id>
+            <l7:Type>ID_PROVIDER_CONFIG</l7:Type>
+            <l7:TimeStamp>2026-09-23T11:53:43.231Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:IdentityProvider id="0000000000000000fffffffffffffffe" version="0">
+                    <l7:Name>Internal Identity Provider</l7:Name>
+                    <l7:IdentityProviderType>Internal</l7:IdentityProviderType>
+                </l7:IdentityProvider>
+            </l7:Resource>
+        </l7:Item>
+        <l7:Item>
+            <l7:Name>vignesh-tst</l7:Name>
+            <l7:Id>f1fcdb59776c681ccf26924d0c5a0125</l7:Id>
+            <l7:Type>USER</l7:Type>
+            <l7:TimeStamp>2026-09-23T11:53:43.456Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:User id="f1fcdb59776c681ccf26924d0c5a0125" providerId="0000000000000000fffffffffffffffe">
+                    <l7:Login>vignesh-tst</l7:Login>
+                    <l7:Password bundleKey="$L7C2$9fa1f,3cHHvIH9VHAwMU8cRevgogXUXA91nZGMuWiSDMAAKTw=$eRsMcpsLpuVmb3RK07Cl5teNUxbyyH/3U7fkSQ7gFQu6vJCRSht4K8aIdLB7PLyk9kkA7ZeBU5jAP0qKfKRGE6ORidcKXINrOMs4xWGSkrpcSEOKUGGYCi67lxkfg9L5" format="bundleKey:sha512crypt">$L7C2$1,m4nk9Cm6kJ+sxAKe4rZgEex38akd49CBtruUABUqAlM=$jn3Lg4fZpFH0cVDDBUkrKLtS7hE5xyowZo5Uqgb6fVXZOrR/xkaiO/8I99ayyEDlsQTUbLHaGGekRVfjQq6aWW02s3jMhalD/4Xh0kM+xoXYpPSSETLqASN1sp7lLSo9/2tFqqVfMdWHfkdfyicVVgGyH6jqEOfMI+aZzyIXfeLm9wHxDYNH0JACjftabPICyd5wAMywWazDCsKrJEqf0g==</l7:Password>
+                    <l7:Properties>
+                        <l7:Property key="accountExpiration">
+                            <l7:LongValue>-1</l7:LongValue>
+                        </l7:Property>
+                        <l7:Property key="enabled">
+                            <l7:BooleanValue>true</l7:BooleanValue>
+                        </l7:Property>
+                        <l7:Property key="name">
+                            <l7:StringValue>vignesh-tst</l7:StringValue>
+                        </l7:Property>
+                    </l7:Properties>
+                </l7:User>
+            </l7:Resource>
+        </l7:Item>
+        <l7:Item>
+            <l7:Name>hrtapi-fxf-rel-ssl</l7:Name>
+            <l7:Id>00000000000000000000000000000002:hrtapi-fxf-rel-ssl</l7:Id>
+            <l7:Type>SSG_KEY_ENTRY</l7:Type>
+            <l7:TimeStamp>2026-09-23T11:53:43.456Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:PrivateKey alias="hrtapi-fxf-rel-ssl" id="00000000000000000000000000000002:hrtapi-fxf-rel-ssl" keystoreId="00000000000000000000000000000002">
+                    <l7:CertificateChain>
+                        <l7:CertificateData>
+                            <l7:IssuerName>CN%3DFedEx+Corporation+Issuing+CA%2CO%3DFedEx+Corporation%2CL%3DCollierville%2CST%3DTennessee%2CC%3DUS</l7:IssuerName>
+                            <l7:SerialNumber>165750810288883579272452539687830306581</l7:SerialNumber>
+                            <l7:SubjectName>CN%3Dhrtapi-fxf-rel.ute.fedex.com%2COU%3DePDSM+%28API%29%2CO%3DFedEx+Corporation%2CST%3DTennessee%2CC%3DUS</l7:SubjectName>
+                            <l7:Encoded>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</l7:Encoded>
+                        </l7:CertificateData>
+                        <l7:CertificateData>
+                            <l7:IssuerName>CN%3DFedEx+Corporation+Root+CA%2CO%3DFedEx+Corporation%2CL%3DCollierville%2CST%3DTennessee%2CC%3DUS</l7:IssuerName>
+                            <l7:SerialNumber>108089356094108662739513319410593201079</l7:SerialNumber>
+                            <l7:SubjectName>CN%3DFedEx+Corporation+Issuing+CA%2CO%3DFedEx+Corporation%2CL%3DCollierville%2CST%3DTennessee%2CC%3DUS</l7:SubjectName>
+                            <l7:Encoded>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</l7:Encoded>
+                        </l7:CertificateData>
+                    </l7:CertificateChain>
+                    <l7:Properties>
+                        <l7:Property key="keyAlgorithm">
+                            <l7:StringValue>RSA</l7:StringValue>
+                        </l7:Property>
+                        <l7:Property key="keyData">
+                            <l7:StringValue algorithm="RSA" bundleKey="$L7C2$9fa1f,3cHHvIH9VHAwMU8cRevgogXUXA91nZGMuWiSDMAAKTw=$eRsMcpsLpuVmb3RK07Cl5teNUxbyyH/3U7fkSQ7gFQu6vJCRSht4K8aIdLB7PLyk9kkA7ZeBU5jAP0qKfKRGE6ORidcKXINrOMs4xWGSkrpcSEOKUGGYCi67lxkfg9L5">$L7C2$1,MQ1ihbkBYfSxUbgPfI09/PulesOziLrPlr3R6yki7sg=$ME3wLg8FPnGJFqOvzMFnNg2ROQw87msj1gJChJm1tpa/AJs533t+xKtecRpQOq769EtqQ6AYoQZdqziozwyQ5UC2uRlfMgkCMvVlgITyFu/Mhsg9S20UkNwdhYPfptNMayhnFSmBNza/uRuipEBqk84bhlrK9Lvt+vxPZg00wDt9SRag32QBUc08kjQnxJvkE6Fc7fo/MreD4yeQz/r8vmXuVxqBuEYidoGKncGBz5B7B7Wmbogcfbp0vIw1DJ5BwT5k0GzMZsEXhORJQftoJtA8v4WPiZDqjfbamzWB9QC7VQY51xUw33kfDXK+TFEoP1cwz8i1v+JdR9EQ7BwLMPGrtdXlJ5Jrnrtc0QFEu89T6gX41KUU14dCfl5FFXObqKnawLLzhZIXGeBXmILTc3ldpbz153SwMefA7EQiNyddi73Iq+z2nTHgL2KHWg4UJJr/u/Hu+9kKYRzQUYiGicQxjaDTLSBoSNxhVUY7akP8DpiB1MzCVXaBI5RV/6rAvDdfARomW8T/UbrcMb+Az5YW0WAMwR6cktHnyF66dCd5g/ruC0NFsgQFcJ1xhG72b0knCadTpkxPHWwiiKe2W9vO2OjrrxvcJvkF8w0zoulUFYEP0Ch03xgWZexU+VFAak+WxmPzClbhtHdXZzGpPOLL+X+GUaT+qJFnRubX+/EnVJc/EhYi4Kxv4FuWt0lThClT4r/OPhDpnzoTUWhXnY6/pxMWQj/+OcByzBd2Kxv7Vz4lCI+RnzcQP3rIr2TOI/bDqzf/JlyTHQ+a8TngUbxoTp5TmlQddIMIncErNbaQP32POM2SG8k/gGn9V2nLKN7GP4UDTqINo4ozwJOn/T/dOqXaKxiFcocDFBiYFK3EkPXtDKy95WzoUkjG7ZN2GMTvT40cArNOEjEyhs/ex/hrGtJOt4j+ZfJObl8irOAgXKECnhxDrNATG1soF8ReFGSv3pcsiSTFKU+P2DUP+Ja/KfYX9RNngRPK1w1MzLtj06pnHehjTt2rLcvf23i7U4q0/uMLSMtO4yYQod+Qn6a6DZZ9+a0uun8ItvQn+aPhlgXJkut5Temd3R7KBYcXNqSNSGZCaeAgU/9QziY6suDdlEFthsLeRmQL18jXqk9g6q/f1yslMEp/HHQJtoHznmpTXMfpEDpG1bOUyJNuSO/54NFTJ6ERNGHe1f47/1YegJSVa/Q0klHV32x5qcF2HK1xF1TKS+1y7FA4/PZZUf29LjKtaeBUYvfIQ+UHtiTCMNJqloVsT5LrleKWG2BAznwnm/gO5hICnEwZR9vtasnWIqCy6jBkwEzxwsuArwc4lwBo/mJ42cRs4Oq2wI3x+CE1GIvpjcDDpb3AAxOusUBZmtSPqdo52kT2e6ug12h85xekY5M+sR4SMRNrNbq2uMigTD3D5lg7nfxReSEWMVxQgumzJsj0eJkhprtkFk4XTL0W2OWB49aM32DJNlu8YQnsqTEDkguSmejbX6mFdriGf1fBYAjV6UEr3XsesQUnetL4Var01IDkIMh1fldOt4MkePIb5p//51LPYUU4gsZsxEgqAmzeMyr22m3EyD1GipuFKBU26mexCyWlUiwwbLi/ljGzs00k238lPcL1pLGzEE7Wl1t34eqZ4fySMcYdVogjMe/AjmQXD3CBla2Cjfa2vZXzHAQ2qnrgxwsptlh3KoDcFrtGcip88bn75Kg=</l7:StringValue>
+                        </l7:Property>
+                        <l7:Property key="specialPurposes">
+                            <l7:StringValue>Default SSL Key</l7:StringValue>
+                        </l7:Property>
+                    </l7:Properties>
+                </l7:PrivateKey>
+            </l7:Resource>
+        </l7:Item>
+        <l7:Item>
+            <l7:Name>vignesh-test</l7:Name>
+            <l7:Id>f1fcdb59776c681ccf26924d0c58c8c6</l7:Id>
+            <l7:Type>SERVICE</l7:Type>
+            <l7:TimeStamp>2026-09-23T11:53:43.458Z</l7:TimeStamp>
+            <l7:Resource>
+                <l7:Service id="f1fcdb59776c681ccf26924d0c58c8c6" version="2">
+                    <l7:ServiceDetail folderId="0000000000000000ffffffffffffec76" id="f1fcdb59776c681ccf26924d0c58c8c6" version="2">
+                        <l7:Name>vignesh-test</l7:Name>
+                        <l7:Enabled>true</l7:Enabled>
+                        <l7:ServiceMappings>
+                            <l7:HttpMapping>
+                                <l7:UrlPattern>/vignesh-test</l7:UrlPattern>
+                                <l7:Verbs>
+                                    <l7:Verb>GET</l7:Verb>
+                                    <l7:Verb>POST</l7:Verb>
+                                    <l7:Verb>PUT</l7:Verb>
+                                    <l7:Verb>DELETE</l7:Verb>
+                                </l7:Verbs>
+                            </l7:HttpMapping>
+                        </l7:ServiceMappings>
+                        <l7:Properties>
+                            <l7:Property key="hasRouting">
+                                <l7:BooleanValue>true</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="internal">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="policyRevision">
+                                <l7:LongValue>3</l7:LongValue>
+                            </l7:Property>
+                            <l7:Property key="soap">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="tracingEnabled">
+                                <l7:BooleanValue>true</l7:BooleanValue>
+                            </l7:Property>
+                            <l7:Property key="wssProcessingEnabled">
+                                <l7:BooleanValue>false</l7:BooleanValue>
+                            </l7:Property>
+                        </l7:Properties>
+                    </l7:ServiceDetail>
+                    <l7:Resources>
+                        <l7:ResourceSet tag="policy">
+                            <l7:Resource type="policy" version="2">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;wsp:Policy xmlns:L7p="http://www.layer7tech.com/ws/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2002/12/policy"&gt;
+    &lt;wsp:All wsp:Usage="Required"&gt;
+        &lt;L7p:AuditAssertion&gt;
+            &lt;L7p:SaveRequest booleanValue="true"/&gt;
+            &lt;L7p:SaveResponse booleanValue="true"/&gt;
+        &lt;/L7p:AuditAssertion&gt;
+        &lt;L7p:AuditDetailAssertion&gt;
+            &lt;L7p:Detail stringValue="request.http.allheadervalues:${request.http.allheadervalues}"/&gt;
+        &lt;/L7p:AuditDetailAssertion&gt;
+        &lt;L7p:SslAssertion/&gt;
+        &lt;L7p:HttpBasic/&gt;
+        &lt;L7p:SpecificUser&gt;
+            &lt;L7p:Enabled booleanValue="false"/&gt;
+            &lt;L7p:IdentityProviderOid goidValue="0000000000000000fffffffffffffffe"/&gt;
+            &lt;L7p:UserLogin stringValue="vignesh-tst"/&gt;
+            &lt;L7p:UserName stringValue="vignesh-tst"/&gt;
+            &lt;L7p:UserUid stringValue="f1fcdb59776c681ccf26924d0c5a0125"/&gt;
+        &lt;/L7p:SpecificUser&gt;
+        &lt;wsp:OneOrMore wsp:Usage="Required"&gt;
+            &lt;L7p:HttpRoutingAssertion&gt;
+                &lt;L7p:ProtectedServiceUrl stringValue="https://localhost:8443/vaishnavi-backend-test"/&gt;
+                &lt;L7p:RequestHeaderRules httpPassthroughRuleSet="included"&gt;
+                    &lt;L7p:ForwardAll booleanValue="true"/&gt;
+                    &lt;L7p:Rules httpPassthroughRules="included"&gt;
+                        &lt;L7p:item httpPassthroughRule="included"&gt;
+                            &lt;L7p:Name stringValue="Cookie"/&gt;
+                        &lt;/L7p:item&gt;
+                        &lt;L7p:item httpPassthroughRule="included"&gt;
+                            &lt;L7p:Name stringValue="SOAPAction"/&gt;
+                        &lt;/L7p:item&gt;
+                    &lt;/L7p:Rules&gt;
+                &lt;/L7p:RequestHeaderRules&gt;
+                &lt;L7p:RequestParamRules httpPassthroughRuleSet="included"&gt;
+                    &lt;L7p:ForwardAll booleanValue="true"/&gt;
+                    &lt;L7p:Rules httpPassthroughRules="included"/&gt;
+                &lt;/L7p:RequestParamRules&gt;
+                &lt;L7p:ResponseHeaderRules httpPassthroughRuleSet="included"&gt;
+                    &lt;L7p:ForwardAll booleanValue="true"/&gt;
+                    &lt;L7p:Rules httpPassthroughRules="included"&gt;
+                        &lt;L7p:item httpPassthroughRule="included"&gt;
+                            &lt;L7p:Name stringValue="Set-Cookie"/&gt;
+                        &lt;/L7p:item&gt;
+                    &lt;/L7p:Rules&gt;
+                &lt;/L7p:ResponseHeaderRules&gt;
+                &lt;L7p:SamlAssertionVersion intValue="2"/&gt;
+            &lt;/L7p:HttpRoutingAssertion&gt;
+            &lt;L7p:HardcodedResponse&gt;
+                &lt;L7p:Base64ResponseBody stringValue="RXJyb3Igcm91dGluZyB0byBiYWNrZW5kIHNlcnZpY2U="/&gt;
+                &lt;L7p:ResponseContentType stringValue="text/plain; charset=UTF-8"/&gt;
+            &lt;/L7p:HardcodedResponse&gt;
+        &lt;/wsp:OneOrMore&gt;
+    &lt;/wsp:All&gt;
+&lt;/wsp:Policy&gt;
+</l7:Resource>
+                        </l7:ResourceSet>
+                    </l7:Resources>
+                </l7:Service>
+            </l7:Resource>
+        </l7:Item>
+    </l7:References>
+    <l7:Mappings>
+        <l7:Mapping action="NewOrExisting" srcId="0000000000000000fffffffffffffffe" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/identityProviders/0000000000000000fffffffffffffffe" type="ID_PROVIDER_CONFIG">
+            <l7:Properties>
+                <l7:Property key="FailOnNew">
+                    <l7:BooleanValue>true</l7:BooleanValue>
+                </l7:Property>
+            </l7:Properties>
+        </l7:Mapping>
+        <l7:Mapping action="NewOrExisting" srcId="f1fcdb59776c681ccf26924d0c5a0125" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/f1fcdb59776c681ccf26924d0c5a0125" type="USER"/>
+        <l7:Mapping action="NewOrExisting" srcId="00000000000000000000000000000002:hrtapi-fxf-rel-ssl" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/privateKeys/00000000000000000000000000000002:hrtapi-fxf-rel-ssl" type="SSG_KEY_ENTRY"/>
+        <l7:Mapping action="NewOrExisting" srcId="0000000000000000ffffffffffffec76" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/folders/0000000000000000ffffffffffffec76" type="FOLDER">
+            <l7:Properties>
+                <l7:Property key="FailOnNew">
+                    <l7:BooleanValue>true</l7:BooleanValue>
+                </l7:Property>
+            </l7:Properties>
+        </l7:Mapping>
+        <l7:Mapping action="NewOrExisting" srcId="f1fcdb59776c681ccf26924d0c58c8c6" srcUri="https://srh00135.ute.fedex.com:8443/restman/1.0/services/f1fcdb59776c681ccf26924d0c58c8c6" type="SERVICE"/>
+    </l7:Mappings>
+</l7:Bundle>
