@@ -110,30 +110,117 @@ pipeline {
         }
 
         stage('Prepare GMU Update Mappings') {
-            steps {
-                script {
-                    logReleaseApiMap.each { release, apps ->
-                        apps.each { app ->
-                            String bundlePath = "apis/${app}/${app}.xml"
+    steps {
+        script {
+            logReleaseApiMap.each { release, apps ->
 
-                            echo "Preparing NewOrUpdate mappings for ${bundlePath}"
+                apps.each { app ->
 
-                            ['POLICY', 'SERVICE', 'ENCAPSULATED_ASSERTION'].each { entityType ->
-                                int rc = bat(returnStatus: true, script: """
-                                    @echo off
-                                    call "%GMU_HOME%\\GatewayMigrationUtility.bat" manageMappings -b "${bundlePath}" -t ${entityType} -a NewOrUpdate
-                                """)
-                                if (rc != 0) {
-                                    error "manageMappings failed for ${entityType} in ${app}. Exit code: ${rc}"
-                                }
-                            }
+                    String bundlePath = "apis/${app}/${app}.xml"
 
-                            echo "NewOrUpdate mappings prepared for ${app}"
+                    echo "========================================"
+                    echo "Preparing GMU NewOrUpdate mappings"
+                    echo "Release : ${release}"
+                    echo "API     : ${app}"
+                    echo "Bundle  : ${bundlePath}"
+                    echo "========================================"
+
+                    def entityTypes = [
+                        'POLICY',
+                        'SERVICE',
+                        'ENCAPSULATED_ASSERTION'
+                    ]
+
+                    entityTypes.each { entityType ->
+
+                        String outputFile =
+                            "manageMappings-${app}-${entityType}.log"
+
+                        int exitCode = bat(
+                            returnStatus: true,
+                            script: """
+                                @echo off
+
+                                call "%GMU_HOME%\\GatewayMigrationUtility.bat" ^
+                                    manageMappings ^
+                                    -b "${bundlePath}" ^
+                                    -t ${entityType} ^
+                                    -a NewOrUpdate ^
+                                    > "${outputFile}" 2>&1
+                            """
+                        )
+
+                        String gmuOutput = ''
+
+                        if (fileExists(outputFile)) {
+                            gmuOutput = readFile(outputFile).trim()
+                        }
+                        if (exitCode == 0) {
+
+                            echo """
+========================================
+GMU mapping updated
+API         : ${app}
+Entity Type : ${entityType}
+Action      : NewOrUpdate
+========================================
+"""
+
+                        // The current bundle simply does not contain the entity type.
+                        } else if (
+                            gmuOutput.toLowerCase()
+                                .contains('mapping not found')
+                        ) {
+
+                            echo """
+========================================
+GMU mapping skipped
+API         : ${app}
+Entity Type : ${entityType}
+Reason      : Entity type not present in bundle
+========================================
+"""
+
+                        // REAL GMU FAILURE: Stop deployment.
+                        } else {
+
+                            echo """
+========================================
+GMU manageMappings FAILED
+API         : ${app}
+Entity Type : ${entityType}
+Exit Code   : ${exitCode}
+
+GMU Output:
+${gmuOutput}
+========================================
+"""
+
+                            error """
+manageMappings failed for ${entityType}
+in API ${app}.
+
+Exit code: ${exitCode}
+"""
+                        }
+
+                        // Delete temporary log after processing.
+                        if (fileExists(outputFile)) {
+                            bat """
+                                @echo off
+                                del /q "${outputFile}"
+                            """
                         }
                     }
+
+                    echo "========================================"
+                    echo "Mapping preparation completed: ${app}"
+                    echo "========================================"
                 }
             }
         }
+    }
+}
 
         stage('Test Layer7 Migration') {
             steps {
