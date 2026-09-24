@@ -237,9 +237,9 @@ Exit code: ${exitCode}
                                     @echo off
                                     set "PATH=%JAVA_HOME%\\bin;%PATH%"
                                     call "%GMU_HOME%\\GatewayMigrationUtility.bat" migrateIn ^
-                                        -h "%GATEWAY_HOST%" ^
-                                        -p "%GATEWAY_PORT%" ^
-                                        -u "%GATEWAY_USERNAME%" ^
+                                        --host "%GATEWAY_HOST%" ^
+                                        --port "%GATEWAY_PORT%" ^
+                                        --username "%GATEWAY_USERNAME%" ^
                                         --plaintextPassword "%GATEWAY_PASSWORD%" ^
                                         --bundle "${bundlePath}" ^
                                         --plaintextEncryptionPassphrase "%GATEWAY_PASSWORD%" ^
