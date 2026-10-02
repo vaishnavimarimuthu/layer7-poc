@@ -2,3 +2,9 @@ gateway:
   host: srh00135.ute.fedex.com
   port: 8443
   protocol: https
+clusterProperties:
+  cluster.hostname: hrtapi-fxf-rel.ute.fedex.com
+  hrt.ds.messagesize: 4000
+  hrt.ds.windowvalue: 500
+  hrt.ds.maxrequest: 500
+  hrt.ds.maxvalue: 500
