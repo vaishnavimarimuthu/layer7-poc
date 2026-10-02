@@ -222,7 +222,9 @@ Exit code: ${exitCode}
     }
 }
         stage('Update Cluster Properties') {
+
     steps {
+
         withCredentials([
             usernamePassword(
                 credentialsId: 'layer7-gateway-credentials',
@@ -242,35 +244,28 @@ Exit code: ${exitCode}
 
                 clusterProps.each { propName, propValue ->
 
-                    echo "Updating: ${propName}"
+                    echo "Processing Cluster Property: ${propName}"
 
                     //
-                    // Get Property ID
+                    // Query existing property
                     //
 
                     def response = bat(
                         returnStdout: true,
                         script: """
-                            @echo off
+@echo off
 
-                            curl -k ^
-                            -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
-                            "https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
-                        """
+curl -k ^
+-u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
+"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
+"""
                     ).trim()
 
                     def matcher =
                         (response =~ /<l7:Id>(.*?)<\\/l7:Id>/)
 
-                    if (!matcher.find()) {
-                        error "Property not found: ${propName}"
-                    }
-
-                    def propertyId =
-                        matcher.group(1)
-
                     //
-                    // Build XML
+                    // Build XML payload
                     //
 
                     def xmlPayload = """
@@ -287,35 +282,68 @@ Exit code: ${exitCode}
                     )
 
                     //
-                    // PUT Update
+                    // Existing Property -> PUT
                     //
 
-                    bat """
-                        @echo off
+                    if (matcher.find()) {
 
-                        curl -k ^
-                        -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
-                        -X PUT ^
-                        -H "Content-Type: application/xml" ^
-                        --data-binary "@clusterProperty.xml" ^
-                        "https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties/${propertyId}"
-                    """
+                        def propertyId =
+                            matcher.group(1)
 
-                    echo """
+                        echo "Property exists. Updating..."
+
+                        bat """
+@echo off
+
+curl -k ^
+-u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
+-X PUT ^
+-H "Content-Type: application/xml" ^
+--data-binary "@clusterProperty.xml" ^
+"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties/${propertyId}"
+"""
+
+                        echo """
 Cluster Property Updated
 
-Property :
-${propName}
-
-Value :
-${propValue}
+Property : ${propName}
+Value    : ${propValue}
+ID       : ${propertyId}
 """
+
+                    }
+
+                    //
+                    // New Property -> POST
+                    //
+
+                    else {
+
+                        echo "Property does not exist. Creating..."
+
+                        bat """
+@echo off
+
+curl -k ^
+-u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
+-X POST ^
+-H "Content-Type: application/xml" ^
+--data-binary "@clusterProperty.xml" ^
+"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties"
+"""
+
+                        echo """
+Cluster Property Created
+
+Property : ${propName}
+Value    : ${propValue}
+"""
+                    }
                 }
             }
         }
     }
 }
-
         stage('Test Layer7 Migration') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'layer7-gateway-credentials', usernameVariable: 'GATEWAY_USERNAME', passwordVariable: 'GATEWAY_PASSWORD')]) {
