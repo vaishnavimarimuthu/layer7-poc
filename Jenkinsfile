@@ -327,34 +327,10 @@ ID       : ${propertyId}
 
                     } else {
 
-                        echo """
-Property not found
-
-Property : ${propName}
-
-Creating...
-"""
-
-                        //
-                        // POST
-                        //
-
-                        bat """
-@echo off
-
-curl -k ^
--u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
--X POST ^
--H "Content-Type: application/xml" ^
---data-binary "@clusterProperty.xml" ^
-"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties"
-"""
-
-                        echo """
-Cluster Property Created
-
-Property : ${propName}
-Value    : ${propValue}
+                      echo """
+Property not found: ${propName}
+ 
+Skipping update.
 """
                     }
                 }
