@@ -3,4 +3,4 @@ gateway:
   port: 8443
   protocol: https
 clusterProperties:
-  test.service.url: https://localhost:8443
+  test.service.url: https://localhost:8080
