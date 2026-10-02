@@ -221,6 +221,100 @@ Exit code: ${exitCode}
         }
     }
 }
+        stage('Update Cluster Properties') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'layer7-gateway-credentials',
+                usernameVariable: 'GATEWAY_USERNAME',
+                passwordVariable: 'GATEWAY_PASSWORD'
+            )
+        ]) {
+
+            script {
+
+                def envConfig =
+                    readYaml file:
+                    "config/${params.ENVIRONMENT}.yaml"
+
+                def clusterProps =
+                    envConfig.clusterProperties ?: [:]
+
+                clusterProps.each { propName, propValue ->
+
+                    echo "Updating: ${propName}"
+
+                    //
+                    // Get Property ID
+                    //
+
+                    def response = bat(
+                        returnStdout: true,
+                        script: """
+                            @echo off
+
+                            curl -k ^
+                            -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
+                            "https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
+                        """
+                    ).trim()
+
+                    def matcher =
+                        (response =~ /<l7:Id>(.*?)<\\/l7:Id>/)
+
+                    if (!matcher.find()) {
+                        error "Property not found: ${propName}"
+                    }
+
+                    def propertyId =
+                        matcher.group(1)
+
+                    //
+                    // Build XML
+                    //
+
+                    def xmlPayload = """
+<?xml version="1.0" encoding="UTF-8"?>
+<l7:ClusterProperty xmlns:l7="http://ns.l7tech.com/2010/04/gateway-management">
+    <l7:Name>${propName}</l7:Name>
+    <l7:Value>${propValue}</l7:Value>
+</l7:ClusterProperty>
+"""
+
+                    writeFile(
+                        file: "clusterProperty.xml",
+                        text: xmlPayload
+                    )
+
+                    //
+                    // PUT Update
+                    //
+
+                    bat """
+                        @echo off
+
+                        curl -k ^
+                        -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
+                        -X PUT ^
+                        -H "Content-Type: application/xml" ^
+                        --data-binary "@clusterProperty.xml" ^
+                        "https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties/${propertyId}"
+                    """
+
+                    echo """
+Cluster Property Updated
+
+Property :
+${propName}
+
+Value :
+${propValue}
+"""
+                }
+            }
+        }
+    }
+}
 
         stage('Test Layer7 Migration') {
             steps {
