@@ -247,7 +247,7 @@ Exit code: ${exitCode}
                     echo "Processing Cluster Property: ${propName}"
 
                     //
-                    // Query existing property
+                    // GET existing property
                     //
 
                     def response = bat(
@@ -255,17 +255,14 @@ Exit code: ${exitCode}
                         script: """
 @echo off
 
-curl -k ^
+curl -s -k ^
 -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
 "https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
 """
                     ).trim()
 
-                    def matcher =
-                        (response =~ /<l7:Id>(.*?)<\\/l7:Id>/)
-
                     //
-                    // Build XML payload
+                    // Create payload
                     //
 
                     def xmlPayload = """
@@ -282,15 +279,32 @@ curl -k ^
                     )
 
                     //
-                    // Existing Property -> PUT
+                    // Check if property exists
                     //
 
-                    if (matcher.find()) {
+                    def matcher =
+                        (response =~ /<l7:Id>(.*?)<\\/l7:Id>/)
+
+                    def propertyExists =
+                        matcher.find()
+
+                    if (propertyExists) {
 
                         def propertyId =
                             matcher.group(1)
 
-                        echo "Property exists. Updating..."
+                        echo """
+Property exists
+
+Property : ${propName}
+ID       : ${propertyId}
+
+Updating...
+"""
+
+                        //
+                        // PUT
+                        //
 
                         bat """
 @echo off
@@ -311,15 +325,19 @@ Value    : ${propValue}
 ID       : ${propertyId}
 """
 
-                    }
+                    } else {
 
-                    //
-                    // New Property -> POST
-                    //
+                        echo """
+Property not found
 
-                    else {
+Property : ${propName}
 
-                        echo "Property does not exist. Creating..."
+Creating...
+"""
+
+                        //
+                        // POST
+                        //
 
                         bat """
 @echo off
