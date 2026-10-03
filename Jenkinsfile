@@ -277,20 +277,18 @@ curl -s -k ^
                         text: xmlPayload
                     )
 
-                    //
                     // Check if property exists
-                    //
-                   String propertyId = ""
- 
-def matcher = (response =~ /<l7:Id>(.*?)<\/l7:Id>/)
- 
-if (matcher.find()) {
-propertyId = matcher.group(1)
-}
- 
-matcher = null
- 
-if (propertyId) {
+                 String propertyId = ""
+
+                def matcher = (response =~ /<l7:Id>(.*?)<\/l7:Id>/)
+
+                if (matcher.find()) {
+                    propertyId = matcher.group(1)
+                }
+
+                matcher = null
+
+            if (propertyId) {
 
                         echo """
 Property exists
