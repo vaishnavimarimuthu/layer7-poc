@@ -282,8 +282,7 @@ curl -s -k ^
                     //
                    String propertyId = ""
  
-def matcher =
-(response =~ /<l7:Id>(.*?)<\/l7:Id>/)
+def matcher = (response =~ /<l7:Id>(.*?)<\/l7:Id>/)
  
 if (matcher.find()) {
 propertyId = matcher.group(1)
