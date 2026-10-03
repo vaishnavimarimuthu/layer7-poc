@@ -266,7 +266,6 @@ curl -s -k ^
                     //
 
                     def xmlPayload = """
-<?xml version="1.0" encoding="UTF-8"?>
 <l7:ClusterProperty xmlns:l7="http://ns.l7tech.com/2010/04/gateway-management">
     <l7:Name>${propName}</l7:Name>
     <l7:Value>${propValue}</l7:Value>
