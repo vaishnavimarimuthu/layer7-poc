@@ -253,16 +253,11 @@ Exit code: ${exitCode}
                     def response = bat(
     returnStdout: true,
     script: """
-@echo on
+@echo off
 
-echo Host=%GATEWAY_HOST%
-echo Port=%GATEWAY_PORT%
-echo Property=${propName}
-
-curl -v -k ^
+curl -s -k ^
 -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
-"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/version"
-
+"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
 """
 ).trim()
 
