@@ -280,17 +280,18 @@ curl -s -k ^
                     //
                     // Check if property exists
                     //
-
-                    def matcher =
-                        (response =~ /<l7:Id>(.*?)<\\/l7:Id>/)
-
-                    def propertyExists =
-                        matcher.find()
-
-                    if (propertyExists) {
-
-                        def propertyId =
-                            matcher.group(1)
+                   String propertyId = ""
+ 
+def matcher =
+(response =~ /<l7:Id>(.*?)<\/l7:Id>/)
+ 
+if (matcher.find()) {
+propertyId = matcher.group(1)
+}
+ 
+matcher = null
+ 
+if (propertyId) {
 
                         echo """
 Property exists
