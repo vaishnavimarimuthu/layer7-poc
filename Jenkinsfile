@@ -251,15 +251,20 @@ Exit code: ${exitCode}
                     //
 
                     def response = bat(
-                        returnStdout: true,
-                        script: """
-@echo off
+    returnStdout: true,
+    script: """
+@echo on
 
-curl -s -k ^
+echo Host=%GATEWAY_HOST%
+echo Port=%GATEWAY_PORT%
+echo Property=${propName}
+
+curl -v -k ^
 -u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
-"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
+"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/version"
+
 """
-                    ).trim()
+).trim()
 
                     //
                     // Create payload
