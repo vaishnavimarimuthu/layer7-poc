@@ -169,7 +169,10 @@ bundleXml =
                         file: runtimeBundle,
                         text: bundleXml
                     )
-                    archiveArtifacts artifacts: 'runtime-*.xml'
+                    always {
+archiveArtifacts artifacts: '*.xml', allowEmptyArchive: true
+cleanWs()
+}
                     echo """
 Runtime Bundle Created
 
