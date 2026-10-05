@@ -171,7 +171,6 @@ bundleXml =
                     )
                     archiveArtifacts artifacts: runtimeBundle
  
-echo "Runtime Bundle Created : ${runtimeBundle}"
 
                     echo """
 Runtime Bundle Created
