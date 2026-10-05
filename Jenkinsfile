@@ -157,8 +157,7 @@ java.util.regex.Matcher.quoteReplacement(
 propValue.toString()
 ) +
 '$3'
-bundleXml =
-bundleXml.replaceFirst(pattern,replacement) 
+bundleXml = bundleXml.replaceFirst(pattern,replacement)
 } 
 else { 
 echo "Skipping Property : ${propName}"
