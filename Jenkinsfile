@@ -174,12 +174,10 @@ archiveArtifacts artifacts: 'runtime*.xml', allowEmptyArchive: true
 cleanWs()
 }
                     echo "========= RUNTIME BUNDLE CONTENT ========="
- 
 bat """
 @echo off
 type "${runtimeBundle}"
 """
- 
 echo "========================================="
                     echo """
 Runtime Bundle Created
