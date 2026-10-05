@@ -159,7 +159,7 @@ propValue.toString()
 '$3'
 bundleXml = bundleXml.replaceFirst(pattern,replacement)
 } 
-else { 
+else {
 echo "Skipping Property : ${propName}"
 }
 }
