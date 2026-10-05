@@ -161,8 +161,7 @@ bundleXml =
 bundleXml.replaceFirst(
 pattern,
 replacement
-)
- 
+) 
 } else {
  
 echo "Skipping Property : ${propName}"
