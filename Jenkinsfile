@@ -152,7 +152,6 @@ Value    : ${propValue}
 bundleXml = bundleXml.replaceFirst(
 "(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>)(.*?)(</l7:Value>)"
 ) { match, startTag, oldValue, endTag ->
- 
 "${startTag}${propValue}${endTag}"
 }
 
