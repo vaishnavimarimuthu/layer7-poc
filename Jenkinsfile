@@ -109,14 +109,88 @@ pipeline {
             }
         }
 
-        stage('Prepare GMU Update Mappings') {
+       
+       stage('Update Bundle Cluster Properties') {
+
+    steps {
+
+        script {
+
+            def envConfig =
+                readYaml file:
+                "config/${params.ENVIRONMENT}.yaml"
+
+            def clusterProps =
+                envConfig.clusterProperties ?: [:]
+
+            logReleaseApiMap.each { release, apps ->
+
+                apps.each { app ->
+
+                    String originalBundle =
+                        "apis/${app}/${app}.xml"
+
+                    String runtimeBundle =
+                        "runtime-${app}.xml"
+
+                    String bundleXml =
+                        readFile(originalBundle)
+
+                    clusterProps.each { propName, propValue ->
+
+                        String searchPattern =
+                            "<l7:Name>${propName}</l7:Name>"
+
+                        if (bundleXml.contains(searchPattern)) {
+
+                            echo """
+Updating Property
+
+Property : ${propName}
+Value    : ${propValue}
+"""
+
+                           String newValue =
+    java.util.regex.Matcher.quoteReplacement(
+        propValue.toString()
+    )
+
+bundleXml =
+    bundleXml.replaceAll(
+        "(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>).*?(</l7:Value>)",
+        "\\$1${newValue}\\$2"
+    )
+
+                        } else {
+
+                            echo "Skipping Property : ${propName}"
+                        }
+                    }
+
+                    writeFile(
+                        file: runtimeBundle,
+                        text: bundleXml
+                    )
+
+                    echo """
+Runtime Bundle Created
+
+Original : ${originalBundle}
+Runtime  : ${runtimeBundle}
+"""
+                }
+            }
+        }
+    }
+}
+         stage('Prepare GMU Update Mappings') {
     steps {
         script {
             logReleaseApiMap.each { release, apps ->
 
                 apps.each { app ->
 
-                    String bundlePath = "apis/${app}/${app}.xml"
+                    String bundlePath = "runtime-${app}.xml"
 
                     echo "========================================"
                     echo "Preparing GMU NewOrUpdate mappings"
@@ -128,7 +202,8 @@ pipeline {
                     def entityTypes = [
                         'POLICY',
                         'SERVICE',
-                        'ENCAPSULATED_ASSERTION'
+                        'ENCAPSULATED_ASSERTION',
+                        'CLUSTER_PROPERTY'
                     ]
 
                     entityTypes.each { entityType ->
@@ -221,127 +296,13 @@ Exit code: ${exitCode}
         }
     }
 }
-        stage('Update Cluster Properties') {
-
-    steps {
-
-        withCredentials([
-            usernamePassword(
-                credentialsId: 'layer7-gateway-credentials',
-                usernameVariable: 'GATEWAY_USERNAME',
-                passwordVariable: 'GATEWAY_PASSWORD'
-            )
-        ]) {
-
-            script {
-
-                def envConfig =
-                    readYaml file:
-                    "config/${params.ENVIRONMENT}.yaml"
-
-                def clusterProps =
-                    envConfig.clusterProperties ?: [:]
-
-                clusterProps.each { propName, propValue ->
-
-                    echo "Processing Cluster Property: ${propName}"
-
-                    //
-                    // GET existing property
-                    //
-
-                    def response = bat(
-    returnStdout: true,
-    script: """
-@echo off
-
-curl -s -k ^
--u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
-"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties?name=${propName}"
-"""
-).trim()
-
-                    //
-                    // Create payload
-                    //
-
-                    def xmlPayload = """
-<l7:ClusterProperty xmlns:l7="http://ns.l7tech.com/2010/04/gateway-management">
-    <l7:Name>${propName}</l7:Name>
-    <l7:Value>${propValue}</l7:Value>
-</l7:ClusterProperty>
-"""
-
-                    writeFile(
-                        file: "clusterProperty.xml",
-                        text: xmlPayload
-                    )
-
-                    // Check if property exists
-                 String propertyId = ""
-
-                def matcher = (response =~ /<l7:Id>(.*?)<\/l7:Id>/)
-
-                if (matcher.find()) {
-                    propertyId = matcher.group(1)
-                }
-
-                matcher = null
-
-            if (propertyId) {
-
-                        echo """
-Property exists
-
-Property : ${propName}
-ID       : ${propertyId}
-
-Updating...
-"""
-
-                        //
-                        // PUT
-                        //
-
-                        bat """
-@echo off
-
-curl -k ^
--u "%GATEWAY_USERNAME%:%GATEWAY_PASSWORD%" ^
--X PUT ^
--H "Content-Type: application/xml" ^
---data-binary "@clusterProperty.xml" ^
-"https://%GATEWAY_HOST%:%GATEWAY_PORT%/restman/1.0/clusterProperties/${propertyId}"
-"""
-
-                        echo """
-Cluster Property Updated
-
-Property : ${propName}
-Value    : ${propValue}
-ID       : ${propertyId}
-"""
-
-                    } else {
-
-                      echo """
-Property not found: ${propName}
- 
-Skipping update.
-"""
-                    }
-                }
-            }
-        }
-    }
-}
         stage('Test Layer7 Migration') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'layer7-gateway-credentials', usernameVariable: 'GATEWAY_USERNAME', passwordVariable: 'GATEWAY_PASSWORD')]) {
                     script {
                         logReleaseApiMap.each { release, apps ->
                             apps.each { app ->
-                                String bundlePath = "apis/${app}/${app}.xml"
+                                String bundlePath = "runtime-${app}.xml"
                                 String safeApp = app.replaceAll('[^A-Za-z0-9_.-]', '_')
 
                                 echo "Testing bundle: ${bundlePath}"
@@ -378,7 +339,7 @@ Skipping update.
                     script {
                         logReleaseApiMap.each { release, apps ->
                             apps.each { app ->
-                                String bundlePath = "apis/${app}/${app}.xml"
+                                String bundlePath = "runtime-${app}.xml"
                                 String safeApp = app.replaceAll('[^A-Za-z0-9_.-]', '_')
 
                                 echo "Deploying ${bundlePath} to Layer7 Gateway..."
