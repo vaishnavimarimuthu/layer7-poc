@@ -149,18 +149,25 @@ Updating Property
 Property : ${propName}
 Value    : ${propValue}
 """
-bundleXml = bundleXml.replaceFirst(
+String pattern =
 "(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>)(.*?)(</l7:Value>)"
-) { match, startTag, oldValue, endTag ->
-"${startTag}${propValue}${endTag}"
+String replacement =
+'$1' +
+java.util.regex.Matcher.quoteReplacement(
+propValue.toString()
+) +
+'$3'
+bundleXml =
+bundleXml.replaceFirst(
+pattern,
+replacement
+)
+ 
+} else {
+ 
+echo "Skipping Property : ${propName}"
 }
-
-                        } else {
-
-                            echo "Skipping Property : ${propName}"
-                        }
-                    }
-
+}
                     writeFile(
                         file: runtimeBundle,
                         text: bundleXml
