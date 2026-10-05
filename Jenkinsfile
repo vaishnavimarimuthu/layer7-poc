@@ -169,6 +169,9 @@ bundleXml =
                         file: runtimeBundle,
                         text: bundleXml
                     )
+                    archiveArtifacts artifacts: runtimeBundle
+ 
+echo "Runtime Bundle Created : ${runtimeBundle}"
 
                     echo """
 Runtime Bundle Created
@@ -388,7 +391,7 @@ Exit code: ${exitCode}
             echo "Layer7 Deployment FAILED - Environment: ${params.ENVIRONMENT}"
         }
         always {
-            archiveArtifacts artifacts: 'results-*.xml, gmu-results-*.xml, runtime-*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'results-*.xml, gmu-results-*.xml', allowEmptyArchive: true
             cleanWs()
         }
     }
