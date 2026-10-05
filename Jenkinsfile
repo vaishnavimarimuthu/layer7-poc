@@ -150,15 +150,13 @@ Property : ${propName}
 Value    : ${propValue}
 """
 
-                           String newValue =
-    java.util.regex.Matcher.quoteReplacement(
-        propValue.toString()
-    )
+                          String replacement =
+    "\\\$1${propValue}\\\$2"
 
 bundleXml =
     bundleXml.replaceAll(
         "(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>).*?(</l7:Value>)",
-        "\\$1${newValue}\\$2"
+        replacement
     )
 
                         } else {
