@@ -170,8 +170,6 @@ bundleXml =
                         text: bundleXml
                     )
                     archiveArtifacts artifacts: runtimeBundle
- 
-
                     echo """
 Runtime Bundle Created
 
