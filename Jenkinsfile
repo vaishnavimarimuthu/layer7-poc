@@ -170,7 +170,7 @@ bundleXml =
                         text: bundleXml
                     )
                     always {
-archiveArtifacts artifacts: '*.xml', allowEmptyArchive: true
+archiveArtifacts artifacts: 'runtime*.xml', allowEmptyArchive: true
 cleanWs()
 }
                     echo """
