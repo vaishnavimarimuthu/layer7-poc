@@ -169,7 +169,7 @@ bundleXml =
                         file: runtimeBundle,
                         text: bundleXml
                     )
-                    archiveArtifacts artifacts: runtimeBundle
+                    archiveArtifacts artifacts: 'runtime-*.xml'
                     echo """
 Runtime Bundle Created
 
