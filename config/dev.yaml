@@ -5,3 +5,6 @@ gateway:
 clusterProperties:
   test.service.host: https://localhost:8443
   test.backend.url: vaishnavi-backend-test
+  hrt.ds.messagesize : 5000
+  hrt.ds.windowvalue : 500
+  hrt.ds.maxrequest : 500
