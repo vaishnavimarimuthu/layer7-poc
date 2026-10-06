@@ -334,37 +334,46 @@ pipeline {
         }
       stage('Validate Deployed API') {
         steps {
-            script {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'layer7-api-test-user',
+                    usernameVariable: 'API_USER',
+                    passwordVariable: 'API_PASSWORD'
+                )
+            ]) {
+                script {
     
-                def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
+                    def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
     
-                def validationEndpoint =
-                    envConfig.validationEndpoint["basic.auth.test"]
+                    def validationEndpoint =
+                        envConfig.validationEndpoint["basic.auth.test"]
     
-                if (!validationEndpoint) {
-                    error("Validation endpoint not configured for basic.auth.test")
-                }
+                    if (!validationEndpoint) {
+                        error("Validation endpoint not configured for basic.auth.test")
+                    }
     
-                echo "Running endpoint validation..."
-                echo "Endpoint: https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
+                    echo "Running endpoint validation..."
+                    echo "Endpoint: https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
     
-                def statusCode = bat(
-                    returnStdout: true,
-                    script: """
-                    @echo off
-                    curl -k -s -o NUL -w "%%{http_code}" ^
-                    "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
-                    """
-                ).trim()
+                    def statusCode = bat(
+                        returnStdout: true,
+                        script: """
+                        @echo off
+                        curl -k -s -o NUL -w "%%{http_code}" ^
+                        -u "%API_USER%:%API_PASSWORD%" ^
+                        "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
+                        """
+                    ).trim()
     
-                echo "Endpoint Status Code : ${statusCode}"
+                    echo "Endpoint Status Code : ${statusCode}"
     
-                if (statusCode != "200") {
-                    error("Endpoint validation failed. Expected 200 but got ${statusCode}")
-                }
+                    if (statusCode != "200") {
+                        error("Endpoint validation failed. Expected 200 but got ${statusCode}")
+                    }
     
-                echo "Endpoint validation successful."
+                    echo "Endpoint validation successful."
             }
+        }
     }
 }
         stage('Deployment Verification') {
