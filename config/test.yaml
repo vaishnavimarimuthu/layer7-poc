@@ -3,7 +3,7 @@ gateway:
   port: 8443
   protocol: https
 clusterProperties:
-  test.service.host: https://localhost:8444
+  test.service.host: https://localhost:8443
   test.backend.url: sample-test
   hrt.ds.messagesize : 5000
   hrt.ds.windowvalue : 500
