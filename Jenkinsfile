@@ -111,84 +111,47 @@ pipeline {
 
        
        stage('Update Bundle Cluster Properties') {
-
-    steps {
-
-        script {
-
-            def envConfig =
-                readYaml file:
-                "config/${params.ENVIRONMENT}.yaml"
-
-            def clusterProps =
-                envConfig.clusterProperties ?: [:]
-
-            logReleaseApiMap.each { release, apps ->
-
-                apps.each { app ->
-
-                    String originalBundle =
-                        "apis/${app}/${app}.xml"
-
-                    String runtimeBundle =
-                        "runtime-${app}.xml"
-
-                    String bundleXml =
-                        readFile(originalBundle)
-
-                    clusterProps.each { propName, propValue ->
-
-                        String searchPattern =
-                            "<l7:Name>${propName}</l7:Name>"
-
-                        if (bundleXml.contains(searchPattern)) {
-
+           steps {
+               script {
+                    def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
+                    def clusterProps = envConfig.clusterProperties ?: [:]
+                    logReleaseApiMap.each { release, apps ->
+                        apps.each { app ->
+                            String originalBundle = "apis/${app}/${app}.xml"
+                            String runtimeBundle = "runtime-${app}.xml"
+                            String bundleXml = readFile(originalBundle)
+                            clusterProps.each { propName, propValue ->
+                                String searchPattern = "<l7:Name>${propName}</l7:Name>"
+                                if (bundleXml.contains(searchPattern)) {
+                                    echo """
+                                    Updating Property
+                                    Property : ${propName}
+                                    Value    : ${propValue}
+                                    """
+                                    String pattern = "(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>)(.*?)(</l7:Value>)"
+                                    String replacement = '$1' + java.util.regex.Matcher.quoteReplacement(propValue.toString()) + '$3'
+                                    bundleXml = bundleXml.replaceFirst(pattern,replacement)
+                                } 
+                                else {
+                                    echo "Skipping Property : ${propName}"
+                                }
+                            }
+                            writeFile(
+                                file: runtimeBundle,
+                                text: bundleXml
+                            )
+                            echo "========================================="
                             echo """
-Updating Property
-
-Property : ${propName}
-Value    : ${propValue}
-"""
-String pattern =
-"(?s)(<l7:Name>${java.util.regex.Pattern.quote(propName)}</l7:Name>\\s*<l7:Value>)(.*?)(</l7:Value>)"
-String replacement =
-'$1' +
-java.util.regex.Matcher.quoteReplacement(
-propValue.toString()
-) +
-'$3'
-bundleXml = bundleXml.replaceFirst(pattern,replacement)
-} 
-else {
-echo "Skipping Property : ${propName}"
-}
-}
-                    writeFile(
-                        file: runtimeBundle,
-                        text: bundleXml
-                    )
-                    always {
-archiveArtifacts artifacts: 'runtime*.xml', allowEmptyArchive: true
-cleanWs()
-}
-                    echo "========= RUNTIME BUNDLE CONTENT ========="
-bat """
-@echo off
-type "${runtimeBundle}"
-"""
-echo "========================================="
-                    echo """
-Runtime Bundle Created
-
-Original : ${originalBundle}
-Runtime  : ${runtimeBundle}
-"""
+                                Runtime Bundle Created
+                                Original : ${originalBundle}
+                                Runtime  : ${runtimeBundle}
+                            """
+                        }
+                    }
                 }
             }
         }
-    }
-}
-         stage('Prepare GMU Update Mappings') {
+    stage('Prepare GMU Update Mappings') {
     steps {
         script {
             logReleaseApiMap.each { release, apps ->
@@ -238,13 +201,13 @@ Runtime  : ${runtimeBundle}
                         if (exitCode == 0) {
 
                             echo """
-========================================
-GMU mapping updated
-API         : ${app}
-Entity Type : ${entityType}
-Action      : NewOrUpdate
-========================================
-"""
+                            ========================================
+                            GMU mapping updated
+                            API         : ${app}
+                            Entity Type : ${entityType}
+                            Action      : NewOrUpdate
+                            ========================================
+                            """
 
                         // The current bundle simply does not contain the entity type.
                         } else if (
@@ -253,35 +216,30 @@ Action      : NewOrUpdate
                         ) {
 
                             echo """
-========================================
-GMU mapping skipped
-API         : ${app}
-Entity Type : ${entityType}
-Reason      : Entity type not present in bundle
-========================================
-"""
+                            ========================================
+                            GMU mapping skipped
+                            API         : ${app}
+                            Entity Type : ${entityType}
+                            Reason      : Entity type not present in bundle
+                            ========================================
+                            """
 
                         // REAL GMU FAILURE: Stop deployment.
                         } else {
 
                             echo """
-========================================
-GMU manageMappings FAILED
-API         : ${app}
-Entity Type : ${entityType}
-Exit Code   : ${exitCode}
-
-GMU Output:
-${gmuOutput}
-========================================
-"""
-
+                            ========================================
+                            GMU manageMappings FAILED
+                            API         : ${app}
+                            Entity Type : ${entityType}
+                            Exit Code   : ${exitCode}
+                            GMU Output  : ${gmuOutput}
+                            ========================================
+                            """
                             error """
-manageMappings failed for ${entityType}
-in API ${app}.
-
-Exit code: ${exitCode}
-"""
+                            manageMappings failed for ${entityType} in API ${app}.
+                            Exit code: ${exitCode}
+                            """
                         }
 
                         // Delete temporary log after processing.
