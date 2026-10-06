@@ -341,37 +341,46 @@ pipeline {
                     passwordVariable: 'API_PASSWORD'
                 )
             ]) {
-                script {
-    
-                    def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
-    
-                    def validationEndpoint =
-                        envConfig.validationEndpoint["basic.auth.test"]
-    
-                    if (!validationEndpoint) {
-                        error("Validation endpoint not configured for basic.auth.test")
+               script {
+
+                def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
+            
+                logReleaseApiMap.each { release, apps ->
+            
+                    apps.each { app ->
+            
+                        String endpointKey =
+                            app.toLowerCase().replace('-', '.')
+            
+                        def validationEndpoint =
+                            envConfig.validationEndpoint[endpointKey]
+            
+                        if (!validationEndpoint) {
+                            error("Validation endpoint not configured for ${endpointKey}")
+                        }
+            
+                        echo "Running endpoint validation for ${app}"
+            
+                        def statusCode = bat(
+                            returnStdout: true,
+                            script: """
+                            @echo off
+                            curl -k -s -o NUL -w "%%{http_code}" ^
+                            -u "%API_USER%:%API_PASSWORD%" ^
+                            "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
+                            """
+                        ).trim()
+            
+                        echo "API : ${app}"
+                        echo "Status Code : ${statusCode}"
+            
+                        if (statusCode != "200") {
+                            error("Endpoint validation failed for ${app}. Expected 200 but got ${statusCode}")
+                        }
+            
+                        echo "Endpoint validation successful for ${app}"
                     }
-    
-                    echo "Running endpoint validation..."
-                    echo "Endpoint: https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
-    
-                    def statusCode = bat(
-                        returnStdout: true,
-                        script: """
-                        @echo off
-                        curl -k -s -o NUL -w "%%{http_code}" ^
-                        -u "%API_USER%:%API_PASSWORD%" ^
-                        "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
-                        """
-                    ).trim()
-    
-                    echo "Endpoint Status Code : ${statusCode}"
-    
-                    if (statusCode != "200") {
-                        error("Endpoint validation failed. Expected 200 but got ${statusCode}")
-                    }
-    
-                    echo "Endpoint validation successful."
+                }
             }
         }
     }
