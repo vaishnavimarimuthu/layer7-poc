@@ -332,15 +332,22 @@ pipeline {
                 }
             }
         }
-        stage('Validate Deployed API') {
+      stage('Validate Deployed API') {
         steps {
             script {
-
-                def validationEndpoint = envConfig.validationEndpoint
-
+    
+                def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
+    
+                def validationEndpoint =
+                    envConfig.validationEndpoint["basic.auth.test"]
+    
+                if (!validationEndpoint) {
+                    error("Validation endpoint not configured for basic.auth.test")
+                }
+    
                 echo "Running endpoint validation..."
                 echo "Endpoint: https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
-
+    
                 def statusCode = bat(
                     returnStdout: true,
                     script: """
@@ -350,17 +357,16 @@ pipeline {
                     """
                 ).trim()
     
-                echo "Endpoint Status Code: ${statusCode}"
+                echo "Endpoint Status Code : ${statusCode}"
     
                 if (statusCode != "200") {
                     error("Endpoint validation failed. Expected 200 but got ${statusCode}")
                 }
     
                 echo "Endpoint validation successful."
-        }
+            }
     }
 }
-
         stage('Deployment Verification') {
             steps {
                 echo 'All specified GMU deployments completed successfully.'
