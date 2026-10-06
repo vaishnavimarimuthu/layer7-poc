@@ -8,3 +8,5 @@ clusterProperties:
   hrt.ds.messagesize : 5000
   hrt.ds.windowvalue : 500
   hrt.ds.maxrequest : 500
+validationEndpoint:
+  basic.auth.test: /vignesh-test
