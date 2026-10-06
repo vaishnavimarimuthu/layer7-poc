@@ -332,6 +332,34 @@ pipeline {
                 }
             }
         }
+        stage('Validate Deployed API') {
+        steps {
+            script {
+
+                def validationEndpoint = envConfig.validationEndpoint
+
+                echo "Running endpoint validation..."
+                echo "Endpoint: https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
+
+                def statusCode = bat(
+                    returnStdout: true,
+                    script: """
+                    @echo off
+                    curl -k -s -o NUL -w "%%{http_code}" ^
+                    "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
+                    """
+                ).trim()
+    
+                echo "Endpoint Status Code: ${statusCode}"
+    
+                if (statusCode != "200") {
+                    error("Endpoint validation failed. Expected 200 but got ${statusCode}")
+                }
+    
+                echo "Endpoint validation successful."
+        }
+    }
+}
 
         stage('Deployment Verification') {
             steps {
