@@ -365,7 +365,7 @@ pipeline {
                             returnStdout: true,
                             script: """
                             @echo off
-                            curl -k -s -w "%%{http_code}" ^
+                            curl -k -s -o NUL -w "%%{http_code}" ^
                             -u "%API_USER%:%API_PASSWORD%" ^
                             "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
                             """
