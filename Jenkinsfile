@@ -333,34 +333,44 @@ pipeline {
             }
         }
       stage('Validate Deployed API') {
-        steps {
-            withCredentials([
-                usernamePassword(
-                    credentialsId: 'layer7-api-test-user',
-                    usernameVariable: 'API_USER',
-                    passwordVariable: 'API_PASSWORD'
-                )
-            ]) {
-               script {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'layer7-api-test-user',
+                usernameVariable: 'API_USER',
+                passwordVariable: 'API_PASSWORD'
+            )
+        ]) {
+            script {
 
-                def envConfig = readYaml file: "config/${params.ENVIRONMENT}.yaml"
-            
                 logReleaseApiMap.each { release, apps ->
-            
+
                     apps.each { app ->
-            
-                        String endpointKey =
-                            app.toLowerCase().replace('-', '.')
-            
-                        def validationEndpoint =
-                            envConfig.validationEndpoint[endpointKey]
-            
-                        if (!validationEndpoint) {
-                            error("Validation endpoint not configured for ${endpointKey}")
-                        }
-            
+
                         echo "Running endpoint validation for ${app}"
-            
+
+                        String bundlePath = "apis/${app}/${app}.xml"
+
+                        if (!fileExists(policyFilePath)) {
+                            error("Policy XML not found: ${bundlePath}")
+                        }
+
+                        String xmlContent = readFile(bundlePath)
+
+                        String validationEndpoint = null
+
+                        (xmlContent =~ /<l7:UrlPattern>(.*?)<\/l7:UrlPattern>/).each { match ->
+                            if (match[1].trim().equalsIgnoreCase('/healthCheck')) {
+                                validationEndpoint = match[1].trim()
+                            }
+                        }
+
+                        if (!validationEndpoint) {
+                            error("HealthCheck URL pattern not found for ${app}")
+                        }
+
+                        echo "Detected HealthCheck Endpoint : ${validationEndpoint}"
+
                         def statusCode = bat(
                             returnStdout: true,
                             script: """
@@ -370,14 +380,14 @@ pipeline {
                             "https://%GATEWAY_HOST%:%GATEWAY_PORT%${validationEndpoint}"
                             """
                         ).trim()
-            
+
                         echo "API : ${app}"
                         echo "Status Code : ${statusCode}"
-            
+
                         if (statusCode != "200") {
                             error("Endpoint validation failed for ${app}. Expected 200 but got ${statusCode}")
                         }
-            
+
                         echo "Endpoint validation successful for ${app}"
                     }
                 }
