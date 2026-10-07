@@ -351,7 +351,7 @@ pipeline {
 
                         String bundlePath = "apis/${app}/${app}.xml"
 
-                        if (!fileExists(policyFilePath)) {
+                        if (!fileExists(bundlePath)) {
                             error("Policy XML not found: ${bundlePath}")
                         }
 
